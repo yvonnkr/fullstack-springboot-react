@@ -1,3 +1,19 @@
 server:
   servlet:
     context-path: /api
+
+
+app:
+  datasource:
+    jdbc-url: jdbc:postgresql://localhost:5432/yvolabsdemo
+    username: postgres
+    password: password
+    pool-size: 30
+
+#spring:
+#  datasource:
+#    hikari:
+#      jdbc-url: jdbc:postgresql://localhost:5432/yvolabsdemo
+#      username: postgres
+#      password: password
+#      maximum-pool-size: 30
