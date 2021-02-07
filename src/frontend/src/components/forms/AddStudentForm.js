@@ -3,6 +3,7 @@ import { Formik } from "formik";
 import Input from "antd/lib/input";
 import Button from "antd/lib/button";
 import Tag from "antd/lib/tag";
+import { addNewStudent } from "../../utils/Client";
 
 const inputBottomMargin = { marginBottom: "10px" };
 const tagStyle = {
@@ -10,7 +11,7 @@ const tagStyle = {
   ...inputBottomMargin,
 };
 
-const AddStudentForm = () => {
+const AddStudentForm = (props) => {
   const initialValues = { firstName: "", lastName: "", email: "", gender: "" };
 
   const validateHandler = (values) => {
@@ -40,11 +41,15 @@ const AddStudentForm = () => {
   };
 
   // to use axios
-  const submitHandler = (values, { setSubmitting }) => {
-    setTimeout(() => {
-      alert(JSON.stringify(values, null, 2));
+  const submitHandler = async (student, { setSubmitting }) => {
+    try {
+      await addNewStudent(student);
+      props.onSuccess();
       setSubmitting(false);
-    }, 400);
+    } catch (error) {
+      setSubmitting(false);
+      console.log(error.message);
+    }
   };
 
   return (

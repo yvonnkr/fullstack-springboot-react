@@ -8,3 +8,12 @@ export const getAllStudents = async () => {
     console.log(error.message);
   }
 };
+
+export const addNewStudent = async (student) => {
+  try {
+    await axios.post(`api/students`, student);
+    console.log("student added success.");
+  } catch (error) {
+    console.log(error.message);
+  }
+};

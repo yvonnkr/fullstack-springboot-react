@@ -17,22 +17,22 @@ const App = () => {
     false
   );
 
+  const fetchStudents = async () => {
+    try {
+      setIsLoading(true);
+
+      const response = await getAllStudents();
+      setStudents(response);
+
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        setIsLoading(true);
-
-        const response = await getAllStudents();
-        setStudents(response);
-
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-
-        setIsLoading(false);
-      }
-    };
-
     fetchStudents();
   }, []);
 
@@ -49,7 +49,12 @@ const App = () => {
         onCancel={closeAddStudentModal}
         width={1000}
       >
-        <AddStudentForm />
+        <AddStudentForm
+          onSuccess={() => {
+            closeAddStudentModal();
+            fetchStudents();
+          }}
+        />
       </Modal>
 
       <Footer
@@ -112,11 +117,14 @@ const App = () => {
     return (
       <Container>
         <Table
+          style={{ marginBottom: "100px" }}
           dataSource={students}
           columns={columns}
           rowKey="studentId"
           pagination={false}
         />
+
+        <br />
 
         {commonElements()}
       </Container>
