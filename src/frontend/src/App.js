@@ -6,6 +6,7 @@ import Spin from "antd/lib/spin";
 import Empty from "antd/lib/empty";
 import Modal from "antd/lib/modal";
 import Container from "./components/Container";
+import AddStudentForm from "./components/forms/AddStudentForm";
 import Footer from "./components/Footer";
 import "./App.css";
 
@@ -48,7 +49,7 @@ const App = () => {
         onCancel={closeAddStudentModal}
         width={1000}
       >
-        <h3>TODO: Add Form</h3>
+        <AddStudentForm />
       </Modal>
 
       <Footer
