@@ -59,6 +59,13 @@ const App = () => {
             closeAddStudentModal();
             fetchStudents();
           }}
+          onFailure={(error) => {
+            const message = error.message;
+            const description = error.httpStatus
+              ? error.httpStatus
+              : error.error;
+            errorNotification(message, description);
+          }}
         />
       </Modal>
 

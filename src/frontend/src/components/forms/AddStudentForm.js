@@ -49,10 +49,7 @@ const AddStudentForm = (props) => {
       setSubmitting(false);
     } catch (error) {
       console.log(error);
-
-      const message = error.message;
-      const description = error.error;
-      errorNotification(message, description);
+      props.onFailure(error);
 
       setSubmitting(false);
     }

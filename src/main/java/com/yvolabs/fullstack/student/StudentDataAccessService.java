@@ -39,6 +39,18 @@ public class StudentDataAccessService {
         );
     }
 
+    @SuppressWarnings("ConstantConditions")
+    boolean isEmailTaken(String email) {
+        String sql = String.format("SELECT EXISTS ( SELECT 1 FROM student WHERE email = ?)") ;
+
+
+        return jdbcTemplate.queryForObject(
+                sql,
+                (resultSet, i) -> resultSet.getBoolean(1),
+                email
+        );
+    }
+
     private RowMapper<Student> mapStudentFromDb() {
         return (resultSet, i) -> {
             String studentIdStr = resultSet.getString("student_id");
