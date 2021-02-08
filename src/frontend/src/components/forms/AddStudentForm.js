@@ -4,6 +4,7 @@ import Input from "antd/lib/input";
 import Button from "antd/lib/button";
 import Tag from "antd/lib/tag";
 import { addNewStudent } from "../../utils/Client";
+import { errorNotification } from "../../utils/Notification";
 
 const inputBottomMargin = { marginBottom: "10px" };
 const tagStyle = {
@@ -47,8 +48,13 @@ const AddStudentForm = (props) => {
       props.onSuccess();
       setSubmitting(false);
     } catch (error) {
+      console.log(error);
+
+      const message = error.message;
+      const description = error.error;
+      errorNotification(message, description);
+
       setSubmitting(false);
-      console.log(error.message);
     }
   };
 

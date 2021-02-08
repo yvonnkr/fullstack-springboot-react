@@ -8,6 +8,7 @@ import Modal from "antd/lib/modal";
 import Container from "./components/Container";
 import AddStudentForm from "./components/forms/AddStudentForm";
 import Footer from "./components/Footer";
+import { errorNotification } from "./utils/Notification";
 import "./App.css";
 
 const App = () => {
@@ -20,13 +21,17 @@ const App = () => {
   const fetchStudents = async () => {
     try {
       setIsLoading(true);
-
       const response = await getAllStudents();
+
       setStudents(response);
 
       setIsLoading(false);
     } catch (error) {
       console.log(error);
+
+      const message = error.message;
+      const description = error.httpStatus;
+      errorNotification(message, description);
 
       setIsLoading(false);
     }
