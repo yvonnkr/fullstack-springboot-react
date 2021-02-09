@@ -27,7 +27,7 @@ public class StudentDataAccessService {
     }
 
     public int insertStudent(UUID studentId, Student student) {
-        String sql =String.format( "INSERT INTO student (student_id, first_name, last_name, email, gender) VALUES (?, ?, ?, ?, ?)");
+        String sql =String.format( "INSERT INTO student (student_id, first_name, last_name, email, gender) VALUES (?, ?, ?, ?, ?::gender)");
 
         return jdbcTemplate.update(
                 sql,
