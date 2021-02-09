@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 
 @RestController
@@ -24,9 +25,17 @@ public class StudentController {
         return studentService.getAllStudents();
     }
 
+    @GetMapping("{studentId}/courses")
+    public List<StudentCourse> getAllCoursesForStudent(@PathVariable("studentId") UUID studentId){
+       return studentService.getAllCoursesForStudent(studentId);
+
+    }
+
 
     @PostMapping
     public void addNewStudent(@RequestBody @Valid Student student) {
         studentService.addNewStudent(student);
     }
+
+
 }

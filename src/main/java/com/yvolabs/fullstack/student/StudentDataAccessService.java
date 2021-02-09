@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -17,7 +18,7 @@ public class StudentDataAccessService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Student> selectAllStudents(){
+    public List<Student> selectAllStudents() {
         String sql = String.format("SELECT  student_id,  first_name,  last_name,  email,  gender FROM student");
 
         List<Student> students = jdbcTemplate.query(sql, mapStudentFromDb());
@@ -26,8 +27,16 @@ public class StudentDataAccessService {
 
     }
 
+    public List<StudentCourse> selectAllCoursesForStudent(UUID studentId) {
+        String sql = String.format("SELECT * FROM student JOIN student_course USING(student_id) JOIN course USING(course_id) WHERE student_id = '%s'", studentId);
+
+        List<StudentCourse> studentCourses = jdbcTemplate.query(sql, mapStudentCourseFromDb());
+
+        return studentCourses;
+    }
+
     public int insertStudent(UUID studentId, Student student) {
-        String sql =String.format( "INSERT INTO student (student_id, first_name, last_name, email, gender) VALUES (?, ?, ?, ?, ?::gender)");
+        String sql = String.format("INSERT INTO student (student_id, first_name, last_name, email, gender) VALUES (?, ?, ?, ?, ?::gender)");
 
         return jdbcTemplate.update(
                 sql,
@@ -41,7 +50,7 @@ public class StudentDataAccessService {
 
     @SuppressWarnings("ConstantConditions")
     boolean isEmailTaken(String email) {
-        String sql = String.format("SELECT EXISTS ( SELECT 1 FROM student WHERE email = ?)") ;
+        String sql = String.format("SELECT EXISTS ( SELECT 1 FROM student WHERE email = ?)");
 
 
         return jdbcTemplate.queryForObject(
@@ -69,6 +78,27 @@ public class StudentDataAccessService {
                     lastName,
                     email,
                     gender
+            );
+        };
+    }
+
+    private RowMapper<StudentCourse> mapStudentCourseFromDb() {
+        return (resultSet, i) -> {
+            Integer grade = Optional.ofNullable(resultSet.getString("grade"))
+                    .map(g -> Integer.parseInt(g))
+                    .orElse(null);
+
+
+            return new StudentCourse(
+                    UUID.fromString(resultSet.getString("student_id")),
+                    UUID.fromString(resultSet.getString("course_id")),
+                    resultSet.getString("name"),
+                    resultSet.getString("description"),
+                    resultSet.getString("department"),
+                    resultSet.getString("teacher_name"),
+                    resultSet.getDate("start_date").toLocalDate(),
+                    resultSet.getDate("end_date").toLocalDate(),
+                    grade
             );
         };
     }
