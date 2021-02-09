@@ -9,7 +9,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("students")
+@RequestMapping("api/students")
 //@CrossOrigin("http://localhost:3000")
 public class StudentController {
     private final StudentService studentService;
